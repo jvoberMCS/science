@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-static'
 // import adapter from '@sveltejs/adapter-netlify'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import { mdsvex } from 'mdsvex'
+import { base } from '$app/paths'
 
 const config = {
 	compilerOptions: {
@@ -25,14 +26,18 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			precompress: false,
-			strict: true
+			strict: true,
+			fallback: '404.html', // Required for SPA-like routing on GH Pages
 		}),
 		alias: {
 			'@/*': './src/lib/',
 		},
 		paths: {
 			// Use your repo name (e.g., '/my-repo') if not using a custom domain
-			base: process.env.NODE_ENV === 'production' ? '/science' : '',
+			base: process.env.NODE_ENV === 'production' ? '/build' : '',
+		},
+		prerender: {
+			handleHttpError: 'warn'
 		}
 	},
 	extensions: ['.svelte', '.svx'],

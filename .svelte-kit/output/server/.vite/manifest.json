@@ -1,0 +1,196 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js"
+    ]
+  },
+  "_ElementInfo.svelte.js": {
+    "file": "chunks/ElementInfo.svelte.js",
+    "name": "ElementInfo.svelte"
+  },
+  "_Formulas.Db1hJ1ot.css": {
+    "file": "_app/immutable/assets/Formulas.Db1hJ1ot.css",
+    "src": "_Formulas.Db1hJ1ot.css"
+  },
+  "_Formulas.js": {
+    "file": "chunks/Formulas.js",
+    "name": "Formulas",
+    "imports": [
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/Formulas.Db1hJ1ot.css"
+    ]
+  },
+  "_equality.js": {
+    "file": "chunks/equality.js",
+    "name": "equality"
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js",
+    "name": "exports"
+  },
+  "_index.js": {
+    "file": "chunks/index.js",
+    "name": "index",
+    "imports": [
+      "_index2.js",
+      "_equality.js"
+    ]
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js",
+    "name": "index"
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_index2.js",
+      "_equality.js"
+    ]
+  },
+  "_theme.DavVRx2s.css": {
+    "file": "_app/immutable/assets/theme.DavVRx2s.css",
+    "src": "_theme.DavVRx2s.css"
+  },
+  "_theme.js": {
+    "file": "chunks/theme.js",
+    "name": "theme",
+    "css": [
+      "_app/immutable/assets/theme.DavVRx2s.css"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "name": "entries/fallbacks/error.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_exports.js",
+      "_index.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js",
+      "_exports.js",
+      "_index.js"
+    ]
+  },
+  "src/routes/+layout.js": {
+    "file": "entries/pages/_layout.js",
+    "name": "entries/pages/_layout",
+    "src": "src/routes/+layout.js",
+    "isEntry": true
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_theme.js",
+      "_index2.js",
+      "_index.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.CJGARhxq.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/NationalPark-Regular.C2mNqPwg.ttf",
+      "_app/immutable/assets/AtkinsonHyperlegibleNext-Regular.DOJsAlq1.otf"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_Formulas.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BS4FVZZP.css"
+    ]
+  },
+  "src/routes/apPhysicsReference/+page.svelte": {
+    "file": "entries/pages/apPhysicsReference/_page.svelte.js",
+    "name": "entries/pages/apPhysicsReference/_page.svelte",
+    "src": "src/routes/apPhysicsReference/+page.svelte",
+    "isEntry": true,
+    "css": [
+      "_app/immutable/assets/_page.Ds3BE9_6.css"
+    ]
+  },
+  "src/routes/dev/+page.svelte": {
+    "file": "entries/pages/dev/_page.svelte.js",
+    "name": "entries/pages/dev/_page.svelte",
+    "src": "src/routes/dev/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_ElementInfo.svelte.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.D7NwouFW.css"
+    ]
+  },
+  "src/routes/periodicTable/+page.svelte": {
+    "file": "entries/pages/periodicTable/_page.svelte.js",
+    "name": "entries/pages/periodicTable/_page.svelte",
+    "src": "src/routes/periodicTable/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_theme.js",
+      "_ElementInfo.svelte.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.faQL-1T4.css"
+    ]
+  },
+  "src/routes/physicalScienceReference/+page.svelte": {
+    "file": "entries/pages/physicalScienceReference/_page.svelte.js",
+    "name": "entries/pages/physicalScienceReference/_page.svelte",
+    "src": "src/routes/physicalScienceReference/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_Formulas.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BS4FVZZP.css"
+    ]
+  },
+  "src/routes/physicsReference/+page.svelte": {
+    "file": "entries/pages/physicsReference/_page.svelte.js",
+    "name": "entries/pages/physicsReference/_page.svelte",
+    "src": "src/routes/physicsReference/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.HiEuJzmS.css"
+    ]
+  },
+  "src/theme/fonts/AtkinsonHyperlegibleNext/AtkinsonHyperlegibleNext-Regular.otf": {
+    "file": "_app/immutable/assets/AtkinsonHyperlegibleNext-Regular.DOJsAlq1.otf",
+    "src": "src/theme/fonts/AtkinsonHyperlegibleNext/AtkinsonHyperlegibleNext-Regular.otf"
+  },
+  "src/theme/fonts/National_Park/static/NationalPark-Regular.ttf": {
+    "file": "_app/immutable/assets/NationalPark-Regular.C2mNqPwg.ttf",
+    "src": "src/theme/fonts/National_Park/static/NationalPark-Regular.ttf"
+  }
+}

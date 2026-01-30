@@ -1,0 +1,21 @@
+{
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/apPhysicsReference": [
+		"src/routes/+layout.js"
+	],
+	"/dev": [
+		"src/routes/+layout.js"
+	],
+	"/periodicTable": [
+		"src/routes/+layout.js"
+	],
+	"/physicalScienceReference": [
+		"src/routes/+layout.js"
+	],
+	"/physicsReference": [
+		"src/routes/+layout.js"
+	]
+}

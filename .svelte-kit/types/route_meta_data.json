@@ -9,6 +9,9 @@
 	"/dev": [
 		"src/routes/+layout.js"
 	],
+	"/periodicTablePractice": [
+		"src/routes/+layout.js"
+	],
 	"/periodicTable": [
 		"src/routes/+layout.js"
 	],

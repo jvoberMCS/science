@@ -22,6 +22,9 @@
 			<div class="link">
 				<NavLi href="/periodicTable">Periodic Table</NavLi>
 			</div>
+			<div class="link">
+				<NavLi href="/periodicTablePractice">Periodic Table Practice</NavLi>
+			</div>
 		</NavUl>
 	</Navbar>
 </header>

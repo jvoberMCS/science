@@ -2,16 +2,18 @@
 See ./SvelteStateManagementStrategies.md for different ways to manage state in Svelte.
 */
 export const gamestate = $state({
-    startTime: 0,
-    time: 0,
-    previousTime: 0,
+    previousFrameTime: 0,
+    currentTime: 0,
+    totalRoundTime: 0,
+    previousRoundTime: 0,
     timerIsRunning: false,
+    timerButtonText: "Start",
     paused: false,
     elementList: [],
-    currentElementName: 'Press Timer To Start',
+    currentElementName: null,
     currentElementLocation: 'LEFT',
     locationMode: false,
-    selectedElementSetName: 'Selected Element Set',
+    selectedElementSetName: 'First 18 Elements',
     selectedElementSetElements: [
         'H',
         'He',
@@ -32,5 +34,7 @@ export const gamestate = $state({
         'Cl',
         'Ar',
     ],
+    waitingDots: 0,
+    waitingDotsCounter: 0
 })
 

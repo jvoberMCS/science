@@ -4,6 +4,11 @@
     import {elementInfo as elements} from '../../components/PeriodicTable/ElementInfo.svelte' 
     import {elementSets} from '../../components/PeriodicTablePractice/ElementSets.svelte' 
     import {gamestate} from '../../state/periodicTablePracticeState.svelte'
+    import HStack from '../../lib/components/ui/hstack/HStack.svelte'
+    import Center from '../../lib/components/ui/center/Center.svelte'
+    
+    import { Spinner } from "flowbite-svelte";
+
 
 	let canvas;
 	let ctx;
@@ -32,8 +37,6 @@
     	'Most Common Elements', 
     	'All Elements'
 	]
-
-	let timerButtonText = 'Start';
 
 	const roundTwoPlaces = (number) => {
 		return Math.round(number * 100) / 100
@@ -98,7 +101,6 @@
 		return oldList.filter((el) => el.name !== newElementName)
 	}
 
-
 	const startRound = () => {
 		// Determine which element list is current
 	
@@ -116,18 +118,38 @@
 		gamestate.startTime = Date.now()
 	}
 
+	const restartRound = () => {
+		// Determine which element list is current
+	
+		console.log('Restarting round')
+		setElementSet()
+	
+		gamestate.elementList = createElementList(gamestate.elementList)
+		let newElement = getNewElement(gamestate.elementList)
+		gamestate.currentElementName = newElement.name
+		gamestate.currentElementLocation = newElement.location
+		gamestate.elementList = getUpdatedElementList(
+			gamestate.currentElementName,
+			gamestate.elementList
+		)
+		gamestate.paused = false
+		gamestate.startTime = Date.now()
+	}
 
 	const handleTimerClick = () => {
-		console.log('Timer Clicked')
-		gamestate.time++
 		if (gamestate.timerIsRunning == true && gamestate.elementList.length > 0) {
+			console.log('Pausing')
 			gamestate.paused = true
 			gamestate.timerIsRunning = false
+			gamestate.timerButtonText = "Paused"
 		} else if (gamestate.paused == true) {
+			console.log('Resuming')
 			gamestate.paused = false
 			gamestate.timerIsRunning = true
+			gamestate.timerButtonText = gamestate.currentElementName
 		} else {
 			// Start a new round instead of pausing
+			console.log('Starting a new round')
 			gamestate.previousTime = gamestate.time
 			startRound()
 			gamestate.timerIsRunning = true
@@ -164,9 +186,28 @@
     	resizeObserver.observe(canvas);
 
 		const render = () => {
-    	    const width = canvas.width = window.innerWidth;
-    	    const height = canvas.height = window.innerHeight;
+			// Calc time stuff and update
+			let previous = gamestate.previousFrameTime
+            let current = Date.now()
+            let delta = current - previous
+            gamestate.totalRoundTime = gamestate.timerIsRunning ? gamestate.totalRoundTime + delta : gamestate.totalRoundTime
+            gamestate.previousFrameTime = current
 
+
+            // Update the ... animation loop
+            switch(gamestate.waitingDotsCounter >= 30){
+                case true:
+                    gamestate.waitingDots >= 3 ? gamestate.waitingDots = 0 : gamestate.waitingDots++
+                    gamestate.waitingDotsCounter = 0
+                default: 
+                    gamestate.waitingDotsCounter++ 
+
+            }
+
+			// Clear canvas and draw new frame elements (if necessary)
+			ctx.clearRect(0,0,canvas.width,canvas.height)
+
+			// Loop
     	    frameId = requestAnimationFrame(render);
     	};
 
@@ -182,48 +223,112 @@
 </script>
 
 
-<button 
-    class="timer-btn" 
-    onclick={() => {handleTimerClick()}}
->
-    {timerButtonText}
-</button>
-<select style="position: absolute; top: 50vh; right: 50vw;" bind:value={gamestate.selectedElementSetName}>
-  <option value="" disabled selected hidden>{gamestate.selectedElementSetName}</option>
-  <option value="First 10 Elements">First 10 Elements</option>
-  <option value="First 18 Elements">First 18 Elements</option>
-  <option value="First 36 Elements">First 36 Elements</option>
-  <option value="First 54 Elements">First 54 Elements</option>
-  <option value="Most Common Elements">Most Common Elements</option>
-  <option value="All Elements">All Elements</option>
-</select>
-<div>{gamestate.time}</div>
-<div>{gamestate.elementList[0].name},{gamestate.elementList[1].name},{gamestate.elementList[2].name},{gamestate.elementList[3].name},{gamestate.elementList[4].name}</div>
+<Center>
+    <HStack class='buttonContainer'>
+        <button 
+            class="timer-btn" 
+            onclick={() => {handleTimerClick()}}
+        >
+            {gamestate.timerIsRunning == true ? (gamestate.totalRoundTime / 1000).toFixed(2) : gamestate.paused == true ? "Paused" : "Start"}
+        </button>
+        <div 
+            class="currentElementDisplay" 
+        >
+            {#if gamestate.timerIsRunning == false && gamestate.paused == false}
+                <Spinner />
+            {:else}
+                {gamestate.timerIsRunning == true ? gamestate.currentElementName : gamestate.paused == true ? "🤐" : null}
+            {/if}
+        </div>
+        <button 
+            class="restart-btn" 
+            onclick={() => {restartRound()}}
+        >
+        	Restart
+        </button>
+    </HStack>
+
+</Center>
+
+<Center><HStack>
+    <select bind:value={gamestate.selectedElementSetName}>
+      <option value={gamestate.selectedElementSetName} disabled selected hidden>{gamestate.selectedElementSetName}</option>
+      <option value="First 10 Elements">First 10 Elements</option>
+      <option value="First 18 Elements">First 18 Elements</option>
+      <option value="First 36 Elements">First 36 Elements</option>
+      <option value="First 54 Elements">First 54 Elements</option>
+      <option value="Most Common Elements">Most Common Elements</option>
+      <option value="All Elements">All Elements</option>
+    </select>
+</HStack></Center>
+
+<Center><HStack>
+    <div>Location Mode: {gamestate.locationMode}</div>
+    <div>Location: {gamestate.currentElementLocation}</div>
+</HStack></Center>
+
+<Center>
+    <div class='periodic-table'>
+        {#each elements as element}
+            <div class='element-square' style:width='5vw'>{element.name}</div>
+        {/each}
+    </div>
+</Center>
+
 <canvas bind:this={canvas} style="display:block; width: 100%; height: 100vh; position: absolute; top:0; left:0; z-index: 0; pointer-events: none;"></canvas>
 
 <style>
-    /* Styling to match p5 ".locate()" and ".resize()" */
-    .timer-btn {
-        position: absolute;
+    .currentElementDisplay {
         z-index: 10; /* Above canvas */
-        
-        /* timer.locate(window.innerWidth * 0.37, window.innerHeight * 0.24) */
-        left: 37vw;
-        top: 24vh;
 
-        /* timer.resize(window.innerWidth * 0.125, window.innerHeight / 10) */
         width: 12.5vw;
         height: 10vh;
 
-        /* timer.color = 'blue' */
+        background-color: brown;
+        border: none;
+
+        color: white;
+
+        font-size: 6vh; 
+        font-family: sans-serif;
+        
+        /* Center text */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .timer-btn {
+        z-index: 10; /* Above canvas */
+
+        width: 12.5vw;
+        height: 10vh;
+
         background-color: blue;
         border: none;
         cursor: pointer;
 
-        /* timer.textColor = 'white' */
         color: white;
 
-        /* timer.textSize = window.innerHeight / 16 */
+        font-size: 6vh; 
+        font-family: sans-serif;
+        
+        /* Center text */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .restart-btn {
+        z-index: 10; /* Above canvas */
+
+        width: 12.5vw;
+        height: 10vh;
+
+        background-color: forestGreen;
+        border: none;
+        cursor: pointer;
+
+        color: white;
+
         font-size: 6vh; 
         font-family: sans-serif;
         
@@ -235,5 +340,21 @@
 
     .timer-btn:active {
         transform: scale(0.98); /* Little click effect */
+    }
+
+    .buttonContainer {
+        margin-top: 2vh;
+    }
+    .periodic-table {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        color: red;
+        width: 95vw;
+        border: 1px solid yellow;
+    }
+
+    .element-square {
+        border: 1px solid blue
     }
 </style>

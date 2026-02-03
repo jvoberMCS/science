@@ -38,9 +38,9 @@ const config = {
         prerender: {
             handleHttpError: 'warn'
         },
-        router: {
-            hash: true // Uses hash router for SPA like on Github pages
-        }
+        // router: {
+        //     hash: true // Uses hash router for SPA like on Github pages
+        // }
     },
     extensions: ['.svelte', '.svx'],
     output: {

@@ -1,12 +1,21 @@
 <!-- HStack.svelte -->
 <script lang="ts">
-  import type { CSSProperties } from 'svelte/elements';
+	import type { HTMLAttributes } from "svelte/elements";
+	import type { Snippet } from "svelte";
 
-  // Optional: Allow passing gap and alignment props for convenience
-  let {gap = '1rem', align = 'center', children}: {gap?: string; align?: string; children: Snippet} = $props()
+	interface Props extends HTMLAttributes<HTMLDivElement> {
+		children: Snippet;
+		gap?: string;
+		align?: string;
+	}
+	// Optional: Allow passing gap and alignment props for convenience
+	let { children, gap = "1rem", align = "center", ...rest }: Props = $props();
 </script>
 
-<div style="display: flex; flex-direction: row; gap: {gap}; align-items: {align};">
+<div
+	style="display: flex; flex-direction: row; gap: {gap}; align-items: {align};"
+	{...rest}
+>
 	{@render children?.()}
 </div>
 

@@ -1,20 +1,25 @@
 <!-- Center.svelte -->
 <script lang="ts">
-  import type { CSSProperties } from 'svelte/elements';
+	import type { HTMLAttributes } from "svelte/elements";
+	import type { Snippet } from "svelte";
 
-  let {height = '100%', children}: {height?: string; children: Snippet} = $props()
+	interface Props extends HTMLAttributes<HTMLDivElement> {
+		children: Snippet;
+		height?: string;
+	}
+	let { children, height = "100%", ...rest }: Props = $props();
 </script>
 
-<div class="center-wrapper" style="--height: {height}">
+<div class="center-wrapper" style="--height: {height}" {...rest}>
 	{@render children?.()}
 </div>
 
 <style>
-  .center-wrapper {
-    display: flex;
-    justify-content: center; /* Horizontal */
-    align-items: center;     /* Vertical */
-    height: var(--height);
-    width: 100%;
-  }
+	.center-wrapper {
+		display: flex;
+		justify-content: center; /* Horizontal */
+		align-items: center; /* Vertical */
+		height: var(--height);
+		width: 100%;
+	}
 </style>

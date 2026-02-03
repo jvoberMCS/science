@@ -15,6 +15,25 @@
     let width = 0;
     let height = 0;
 
+    // Disable Right Click
+    document.oncontextmenu = () => {
+        return false;
+    };
+
+    // Disable Pinch Zoom for touch boards and screens
+    document.addEventListener(
+        "touchmove",
+        (e) => {
+            e.preventDefault();
+        },
+        { passive: false },
+    );
+
+    const setSelectedElementSetName = (selection: string) => {
+        gamestate.selectedElementSetName = selection;
+        setElementSet();
+    };
+
     const setElementSet = () => {
         switch (gamestate.selectedElementSetName) {
             case "First 10 Elements":
@@ -193,60 +212,66 @@
     }); // End of onMount
 </script>
 
-<Center>
-    <HStack class="buttonContainer">
-        <button
-            class="timer-btn"
-            onclick={() => {
-                handleTimerClick();
-            }}
-        >
-            {gamestate.timerIsRunning == true
-                ? (gamestate.totalRoundTime / 1000).toFixed(2)
-                : gamestate.paused == true
-                  ? "Paused"
-                  : "Start"}
-        </button>
-        <div class="currentElementDisplay">
-            {#if gamestate.timerIsRunning == false && gamestate.paused == false}
-                <Spinner />
-            {:else}
-                {gamestate.timerIsRunning == true
-                    ? gamestate.currentElementName
-                    : gamestate.paused == true
-                      ? "🤐"
-                      : null}
-            {/if}
-        </div>
-        <button
-            class="restart-btn"
-            onclick={() => {
-                restartRound();
-            }}
-        >
-            Restart
-        </button>
-    </HStack>
-</Center>
-
-<Center
-    ><HStack>
-        <select bind:value={gamestate.selectedElementSetName}>
-            <option
-                value={gamestate.selectedElementSetName}
-                disabled
-                selected
-                hidden>{gamestate.selectedElementSetName}</option
+<div>
+    <Center>
+        <HStack class="buttonContainer">
+            <button
+                class="timer-btn"
+                onclick={() => {
+                    handleTimerClick();
+                }}
             >
-            <option value="First 10 Elements">First 10 Elements</option>
-            <option value="First 18 Elements">First 18 Elements</option>
-            <option value="First 36 Elements">First 36 Elements</option>
-            <option value="First 54 Elements">First 54 Elements</option>
-            <option value="Most Common Elements">Most Common Elements</option>
-            <option value="All Elements">All Elements</option>
-        </select>
-    </HStack></Center
->
+                {gamestate.timerIsRunning == true
+                    ? (gamestate.totalRoundTime / 1000).toFixed(2)
+                    : gamestate.paused == true
+                      ? "Paused"
+                      : "Start"}
+            </button>
+            <div class="currentElementDisplay">
+                {#if gamestate.timerIsRunning == false && gamestate.paused == false}
+                    <Spinner />
+                {:else}
+                    {gamestate.timerIsRunning == true
+                        ? gamestate.currentElementName
+                        : gamestate.paused == true
+                          ? "🤐"
+                          : null}
+                {/if}
+            </div>
+            <button
+                class="restart-btn"
+                onclick={() => {
+                    restartRound();
+                }}
+            >
+                Restart
+            </button>
+            <select
+                class="set-select"
+                bind:value={gamestate.selectedElementSetName}
+                onchange={(selection: any) => {
+                    setSelectedElementSetName(selection.target.value);
+                }}
+                style:justify-self={"end"}
+            >
+                <option
+                    value={gamestate.selectedElementSetName}
+                    disabled
+                    selected
+                    hidden>{gamestate.selectedElementSetName}</option
+                >
+                <option value="First 10 Elements">First 10 Elements</option>
+                <option value="First 18 Elements">First 18 Elements</option>
+                <option value="First 36 Elements">First 36 Elements</option>
+                <option value="First 54 Elements">First 54 Elements</option>
+                <option value="Most Common Elements"
+                    >Most Common Elements</option
+                >
+                <option value="All Elements">All Elements</option>
+            </select>
+        </HStack>
+    </Center>
+</div>
 
 <Center
     ><HStack>
@@ -260,8 +285,23 @@
         {#each elements as element}
             <button
                 class="element-square"
-                style:width="5vw"
                 class:is-hovered={element.name === gamestate.hoveredElementName}
+                style:grid-column-start={element.xpos}
+                style:pointer-events={gamestate.selectedElementSetElements.includes(
+                    element.symbol,
+                )
+                    ? ""
+                    : "none"}
+                style:color={gamestate.selectedElementSetElements.includes(
+                    element.symbol,
+                )
+                    ? element.color
+                    : "black"}
+                style:background={gamestate.selectedElementSetElements.includes(
+                    element.symbol,
+                )
+                    ? element.background
+                    : "gray"}
                 onclick={() => {
                     console.log(`Clicked ${element.name}`);
                 }}
@@ -283,7 +323,32 @@
 ></canvas>
 
 <style>
+    .periodic-table {
+        display: grid;
+        grid-template-columns: repeat(18, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+        justify-items: space-evenly;
+        align-items: space-evenly;
+        gap: 4px;
+        width: 95vw;
+    }
+
+    .element-square {
+        padding: auto;
+        font-size: 3vh;
+        width: 4vw;
+        height: 4vw;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        border-radius: 20%;
+    }
+
+    .is-hovered {
+        transform: scale(1.05);
+    }
+
     .currentElementDisplay {
+        border-radius: 2vw;
         z-index: 10; /* Above canvas */
 
         width: 12.5vw;
@@ -303,6 +368,7 @@
         justify-content: center;
     }
     .timer-btn {
+        border-radius: 2vw;
         z-index: 10; /* Above canvas */
 
         width: 12.5vw;
@@ -323,6 +389,7 @@
         justify-content: center;
     }
     .restart-btn {
+        border-radius: 2vw;
         z-index: 10; /* Above canvas */
 
         width: 12.5vw;
@@ -346,26 +413,7 @@
     .timer-btn:active {
         transform: scale(0.98); /* Little click effect */
     }
-
-    .periodic-table {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: 95vw;
-        border: 1px solid yellow;
-    }
-
-    .element-square {
-        border: 1px solid blue;
-        background-color: lightcoral;
-        padding: 10px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-        color: white;
-    }
-
-    .is-hovered {
-        transform: scale(1.05);
-        color: yellow;
+    .set-select {
+        border-radius: 2vw;
     }
 </style>

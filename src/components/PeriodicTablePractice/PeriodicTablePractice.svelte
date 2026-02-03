@@ -15,20 +15,6 @@
     let width = 0;
     let height = 0;
 
-    // Disable Right Click
-    document.oncontextmenu = () => {
-        return false;
-    };
-
-    // Disable Pinch Zoom for touch boards and screens
-    document.addEventListener(
-        "touchmove",
-        (e) => {
-            e.preventDefault();
-        },
-        { passive: false },
-    );
-
     const setSelectedElementSetName = (selection: string) => {
         gamestate.selectedElementSetName = selection;
         setElementSet();
@@ -183,6 +169,20 @@
         });
 
         resizeObserver.observe(canvas);
+
+        // Disable Right Click
+        document.oncontextmenu = () => {
+            return false;
+        };
+
+        // Disable Pinch Zoom for touch boards and screens
+        document.addEventListener(
+            "touchmove",
+            (e) => {
+                e.preventDefault();
+            },
+            { passive: false },
+        );
 
         const render = () => {
             // Calc time stuff and update

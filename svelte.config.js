@@ -33,7 +33,7 @@ const config = {
         },
         paths: {
             // Use your repo name (e.g., '/my-repo') if not using a custom domain
-            base: process.env.NODE_ENV === 'production' ? '/build' : '',
+            base: process.argv.includes('dev') ? '' : '/science',
         },
         prerender: {
             handleHttpError: 'warn'
